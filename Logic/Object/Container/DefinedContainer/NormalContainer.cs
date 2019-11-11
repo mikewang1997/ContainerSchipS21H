@@ -10,6 +10,14 @@ namespace Logic
     {
         public NormalContainer(int weightKG) : base(weightKG)
         {
+            SetTypeToNormal();
+        }
+        public NormalContainer(IContainer container) : base(container)
+        {
+            SetTypeToNormal();
+        }
+        private void SetTypeToNormal()
+        {
             ContainerType = EnumContainerType.Normal;
         }
     }

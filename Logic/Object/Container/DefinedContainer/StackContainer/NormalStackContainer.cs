@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Logic
 {
-    public class NormalStackContainer : NormalContainer, IStackContainer
+    public class NormalStackContainer : NormalContainer, IStackObject
     {
-        public NormalStackContainer(int weight) : base(weight)
+        public NormalStackContainer(IContainer container) : base(container)
         {
-
+            
         }
 
         public bool CanObjectJoin()

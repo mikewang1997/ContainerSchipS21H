@@ -28,7 +28,7 @@ namespace Logic
         public bool DoesObjectFitInStack(int objectWeightKG)
         {
             int totalStackWeightIfJoined = objectWeightKG += GetWeightKG();
-            if ((objectWeightKG += GetWeightKG()) <= 150000)
+            if (totalStackWeightIfJoined <= 150000)
             {
                 return true;
             }

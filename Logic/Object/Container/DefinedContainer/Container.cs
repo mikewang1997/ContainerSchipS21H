@@ -10,10 +10,14 @@ namespace Logic
     {
         public EnumContainerType ContainerType { get; protected set; }
 
-        public int WeightKG {get; private set; }
+        public int WeightKG {get; protected set; }
         public Container(int weightKG)
         {
             WeightKG = weightKG += 4000;
+        }
+        public Container(IContainer container)
+        {
+            WeightKG = container.WeightKG;
         }
         public int GetTonWeight()
         {

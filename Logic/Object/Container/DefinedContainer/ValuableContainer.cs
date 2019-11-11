@@ -10,6 +10,14 @@ namespace Logic
     {
         public ValuableContainer(int weightKG) : base(weightKG)
         {
+            SetTypeToValuable();
+        }
+        public ValuableContainer(IContainer container) : base(container)
+        {
+            SetTypeToValuable();
+        }
+        private void SetTypeToValuable()
+        {
             ContainerType = EnumContainerType.Valuable;
         }
     }

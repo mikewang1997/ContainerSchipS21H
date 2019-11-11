@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Logic
 {
-    public class ValuableStackContainer : ValuableContainer, IStackContainer
+    public class ValuableStackContainer : ValuableContainer, IStackObject
     {
         //Business Rule: Need to check if there is in front and behind a valuable container in current stack
         List<IStack> StackInFrontAndBehind { get; set; }
-        public ValuableStackContainer(int weight, List<IStack> stackInFrontAndBehind) : base(weight)
+        public ValuableStackContainer(IContainer container, List<IStack> stackInFrontAndBehind) : base(container)
         {
             StackInFrontAndBehind = stackInFrontAndBehind;
         }
@@ -22,17 +22,26 @@ namespace Logic
 
         public bool CanJoinStack()
         {
+            bool resultCanJoin = false;
             foreach (IStack stack in StackInFrontAndBehind)
             {
-                foreach (IContainer container in stack.ListObject)
+                if (stack.ListObject.Count == 0)
                 {
-                    if (container.ContainerType == EnumContainerType.Valuable)
+                    resultCanJoin = true;
+                    break;
+                }
+                else
+                {
+                    foreach (IContainer container in stack.ListObject)
                     {
-                        return false;
+                        if (container.ContainerType == EnumContainerType.Valuable)
+                        {
+                            return resultCanJoin;
+                        }
                     }
                 }
             }
-            return true;
+            return resultCanJoin;
         }
     }
 }

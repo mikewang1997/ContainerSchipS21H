@@ -27,11 +27,15 @@ namespace Logic
                     IStackObject stackObject = StackObjectFactory.Build(objectToAssign, GetStacksInFrontAndBehindOfStack(stackToUse), stackToUse.Coordinate.Y);
                     if (stackToUse.DoesObjectFitInStack(objectToAssign.WeightKG))
                     {
-                        stackToUse.AddObject(stackObject);
-                        break;
+                        if (stackToUse.AddObject(stackObject))
+                        {
+                            break;
+                        }
+                        
                     }
                 }
             }
+            Console.WriteLine(Ship.ListStack);
         }
 
         public List<IStack> GetStacksInFrontAndBehindOfStack(IStack currentStack)
@@ -39,9 +43,12 @@ namespace Logic
             List<IStack> resultStacksInFrontAndBehind = new List<IStack>();
             foreach (IStack stack in Ship.ListStack)
             {
-                if (currentStack.Coordinate.Y + 1 == stack.Coordinate.Y || currentStack.Coordinate.Y - 1 == stack.Coordinate.Y)
+                if (stack.Coordinate.X == currentStack.Coordinate.X)
                 {
-                    resultStacksInFrontAndBehind.Add(stack);
+                    if (currentStack.Coordinate.Y + 1 == stack.Coordinate.Y || currentStack.Coordinate.Y - 1 == stack.Coordinate.Y)
+                    {
+                        resultStacksInFrontAndBehind.Add(stack);
+                    }
                 }
             }
             return resultStacksInFrontAndBehind;
@@ -52,9 +59,13 @@ namespace Logic
             List<IStackGroup> resultListStackGroup = new List<IStackGroup>();
             for (int X = 1; X <= Ship.TotalColumns; X+=Ship.TotalColumns/2)
             {
-                if ((Ship.TotalColumns/2)+1 == X)
+                //check if ship is odd number
+                if (Ship.TotalColumns%2 > 0)
                 {
-                    resultListStackGroup.Add(new StackGroup(Ship.ListStack, new Coordinate(X, 1), new Coordinate(X, Ship.TotalRows)));
+                    if ((Ship.TotalColumns / 2) + 1 == X)
+                    {
+                        resultListStackGroup.Add(new StackGroup(Ship.ListStack, new Coordinate(X, 1), new Coordinate(X, Ship.TotalRows)));
+                    }
                 }
                 else
                 {

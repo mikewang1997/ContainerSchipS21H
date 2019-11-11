@@ -10,6 +10,14 @@ namespace Logic
     {
         public CooledContainer(int weightKG) : base(weightKG)
         {
+            SetTypeToCooled();
+        }
+        public CooledContainer(IContainer container) : base(container)
+        {
+            SetTypeToCooled();
+        }
+        private void SetTypeToCooled()
+        {
             ContainerType = EnumContainerType.Cooled;
         }
     }
