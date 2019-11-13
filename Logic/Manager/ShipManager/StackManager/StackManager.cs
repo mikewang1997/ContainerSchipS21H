@@ -22,16 +22,24 @@ namespace Logic
         {
             foreach (IObject objectToAssign in listObjects)
             {
-                foreach (IStack stackToUse in ShipBalancer.GetStackGroupLowestWeight().ListStack)
+                bool isAssigned = false;
+                foreach (IStackGroup stackGroupToUse in GetStackGroupSortedOnWeightASC().ToList())
                 {
-                    IStackObject stackObject = StackObjectFactory.Build(objectToAssign, GetStacksInFrontAndBehindOfStack(stackToUse), stackToUse.Coordinate.Y);
-                    if (stackToUse.DoesObjectFitInStack(objectToAssign.WeightKG))
+                    if (isAssigned)
                     {
-                        if (stackToUse.AddObject(stackObject))
+                        break;
+                    }
+                    foreach (IStack stackToUse in stackGroupToUse.ListStack.ToList())
+                    {
+                        IStackObject stackObject = StackObjectFactory.Build(objectToAssign, GetStacksInFrontAndBehindOfStack(stackToUse), stackToUse.Coordinate.Y);
+                        if (stackToUse.DoesObjectFitInStack(objectToAssign.WeightKG))
                         {
-                            break;
+                            isAssigned = stackToUse.AddObject(stackObject);
+                            if (isAssigned)
+                            {
+                                break;
+                            }
                         }
-                        
                     }
                 }
             }
@@ -57,23 +65,25 @@ namespace Logic
         public IList<IStackGroup> GetListStackInSections()
         {
             List<IStackGroup> resultListStackGroup = new List<IStackGroup>();
-            for (int X = 1; X <= Ship.TotalColumns; X+=Ship.TotalColumns/2)
+            for (int X = 1; X <= Ship.TotalColumns; X += Ship.TotalColumns / 2)
             {
-                //check if ship is odd number
-                if (Ship.TotalColumns%2 > 0)
+                if ((Ship.TotalColumns / 2)+1 == X)
                 {
-                    if ((Ship.TotalColumns / 2) + 1 == X)
-                    {
-                        resultListStackGroup.Add(new StackGroup(Ship.ListStack, new Coordinate(X, 1), new Coordinate(X, Ship.TotalRows)));
-                    }
+                    resultListStackGroup.Add(new StackGroup(Ship.ListStack, new Coordinate(X, 1), new Coordinate(X, Ship.TotalRows)));
+                    X++;
                 }
-                else
-                {
-                    resultListStackGroup.Add(new StackGroup(Ship.ListStack, new Coordinate(X, 1), new Coordinate(X+Ship.TotalColumns/2-1, Ship.TotalRows)));
-                }
+                resultListStackGroup.Add(new StackGroup(Ship.ListStack, new Coordinate(X, 1), new Coordinate(X + Ship.TotalColumns / 2 - 1, Ship.TotalRows)));
             }
             return resultListStackGroup;
         }
+
+        public List<IStackGroup> GetStackGroupSortedOnWeightASC()
+        {
+            IList<IStackGroup> currentStackGroup = GetListStackInSections();
+            List<IStackGroup> sortedStackGroupResult = currentStackGroup.OrderBy(o => o.GetTotalWeightKG()).ToList();
+            return sortedStackGroupResult;
+        }
+
         public void AssignShipToManageStack(IShip ship)
         {
             Ship = ship;
