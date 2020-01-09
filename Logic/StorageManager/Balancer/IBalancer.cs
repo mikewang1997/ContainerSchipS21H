@@ -8,8 +8,8 @@ namespace Logic
 {
     public interface IBalancer
     {
-        List<IStackGroup> ListStackGroup { get; }
-        bool IsInBalance();
-        IStackGroup GetStackGroupLowestWeight();
+        //List<StackGroup> ListStackGroup { get; }
+        bool IsInBalance(StorageManager storageManager);
+        bool IsSinkable(List<StackGroup> listStackGroup);
     }
 }

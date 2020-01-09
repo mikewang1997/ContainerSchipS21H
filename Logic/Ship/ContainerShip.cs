@@ -7,31 +7,49 @@ using System.Threading.Tasks;
 
 namespace Logic
 {
-    public class ContainerShip : IShip
+    public class ContainerShip : IStorageArea
     {
         public int TotalColumns { get; private set; }
-
         public int TotalRows { get; private set; }
-
-        private List<IStack> _ListStack;
-        public IList<IStack> ListStack {  get{return _ListStack;} }
+        private List<Stack> _ListStack;
+        public IList<Stack> ListStack {  get{return _ListStack;} }
+        public IObjectAssigner ObjectAssigner { get; private set; }
+        public StorageManager StorageManager { get; set; }
 
         public ContainerShip(int totalColumns, int totalRows)
         {
             TotalColumns = totalColumns;
             TotalRows = totalRows;
             InitializeListStacks();
+            StorageManager = new StorageManager(this);
+            ObjectAssigner = new ContainerAssigner(new ShipBalancer(), StorageManager);
         }
         private void InitializeListStacks()
         {
-            _ListStack = new List<IStack>();
+            _ListStack = new List<Stack>();
             for (int x = 1; x <= TotalColumns; x++)
             {
                 for (int y = 1; y <= TotalRows; y++)
                 {
-                    _ListStack.Add(new Stack(new Coordinate(x, y)));
+                    if (y == 1)
+                    {
+                        _ListStack.Add(new Stack(new Coordinate(x, y), true));
+                    }
+                    else
+                    {
+                        _ListStack.Add(new Stack(new Coordinate(x, y)));
+                    }
                 }
             }
+        }
+        public int GetTotalWeight()
+        {
+            int totalWeight = 0;
+            foreach (Stack stack in ListStack)
+            {
+                totalWeight += stack.GetWeightKG();
+            }
+            return totalWeight;
         }
     }
 }

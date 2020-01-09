@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace Logic
 {
-    public interface IStackObject : IObject
+    public interface IItem
     {
-        bool CanObjectJoin();
-        bool CanJoinStack();
+        int WeightKG { get; }
+        ICanJoin CanJoin { get; }
+        int GetTonWeight();
+
     }
 }

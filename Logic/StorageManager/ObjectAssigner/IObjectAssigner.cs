@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace Logic
 {
-    public interface ICoordinate
+    public interface IObjectAssigner
     {
-         int X { get; }
-         int Y { get; }
-            
+        void AssignObjects(IList<IItem> listObjects);
+
     }
 }

@@ -6,18 +6,20 @@ using System.Threading.Tasks;
 
 namespace Logic
 {
-    public abstract class Container : IContainer
+    public abstract class BaseContainer : IItem
     {
-        public EnumContainerType ContainerType { get; protected set; }
-
-        public int WeightKG {get; protected set; }
-        public Container(int weightKG)
+        public EnumContainerType ContainerType { get; private set; }
+        public int WeightKG { get; private set; }
+        public ICanJoin CanJoin { get; private set; }
+        public BaseContainer(int weightKG, EnumContainerType containerType, ICanJoin canJoin)
         {
             WeightKG = weightKG += 4000;
+            ContainerType = containerType;
+            CanJoin = canJoin;
         }
-        public Container(IContainer container)
+        public BaseContainer(int weightKG)
         {
-            WeightKG = container.WeightKG;
+            WeightKG = weightKG;
         }
         public int GetTonWeight()
         {

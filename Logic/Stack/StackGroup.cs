@@ -6,42 +6,29 @@ using System.Threading.Tasks;
 
 namespace Logic
 {
-    public class StackGroup : IStackGroup
+    public class StackGroup
     {
-        private List<IStack> _ListStack;
-        public IList<IStack> ListStack { get { return _ListStack; } }
-        //public EnumStackSide Side { get; private set; }
-        //public int BeginX { get; set; }
+        private List<Stack> _ListStack;
+        public IList<Stack> ListStack { get { return _ListStack; } }
 
-        //public int EndX { get; set; }
-
-        //public int BeginY { get; set; }
-
-        //public int EndY { get; set; }
-
-        public StackGroup(IList<IStack> listStack, ICoordinate startCoordinate, ICoordinate endCoordinate)
+        public StackGroup(IList<Stack> listStack, Coordinate startCoordinate, Coordinate endCoordinate)
         {
-            //Side = side;
-            //BeginX = beginX;
-            //EndX = endX;
-            //BeginY = beginY;
-            //EndY = endY;
             _ListStack = GetListStackFromStartCoordinateAndEndCoordinate(listStack, startCoordinate,endCoordinate);
         }
 
-        public StackGroup(List<IStack> ListStack)
+        public StackGroup(List<Stack> ListStack)
         {
             _ListStack = ListStack;
         }
 
-        private List<IStack> GetListStackFromStartCoordinateAndEndCoordinate(IList<IStack> listStack, ICoordinate startCoordinate, ICoordinate endCoordinate)
+        private List<Stack> GetListStackFromStartCoordinateAndEndCoordinate(IList<Stack> listStack, Coordinate startCoordinate, Coordinate endCoordinate)
         {
-            List<IStack> resultListStack = new List<IStack>();
+            List<Stack> resultListStack = new List<Stack>();
             for (int x = startCoordinate.X; x <= endCoordinate.X; x++)
             {
                 for (int y = startCoordinate.Y; y <= endCoordinate.Y; y++)
                 {
-                    foreach (IStack stackInList in listStack)
+                    foreach (Stack stackInList in listStack)
                     {
                         if (stackInList.Coordinate.X == x )
                         {

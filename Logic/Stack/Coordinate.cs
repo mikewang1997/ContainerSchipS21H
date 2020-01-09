@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Logic
 {
-    public class Coordinate : ICoordinate
+    public class Coordinate
     {
         public int X { get; private set; }
         public int Y { get; private set; }

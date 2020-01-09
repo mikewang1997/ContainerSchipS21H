@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace Logic
 {
-    public interface IContainer : IObject
+    public interface ICanJoin
     {
-        EnumContainerType ContainerType { get; }
+        bool CanObjectJoin(IItem item);
+        bool CanJoinStack(CanJoinParams canJoin);
     }
 }

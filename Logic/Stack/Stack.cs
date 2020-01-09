@@ -6,20 +6,35 @@ using System.Threading.Tasks;
 
 namespace Logic
 {
-    public class Stack : IStack
+    public class Stack
     {
-        public ICoordinate Coordinate { get; private set; }
-        private List<IObject> _ListObject;
-        public IList<IObject> ListObject { get { return _ListObject; } }
-        public Stack(ICoordinate coordinate)
+        public Coordinate Coordinate { get; private set; }
+        private List<IItem> _ListObject;
+        public IList<IItem> ListObject { get { return _ListObject; } }
+        public bool HasPower { get; private set; }
+        public Stack(Coordinate coordinate, bool hasPower)
         {
-            _ListObject = new List<IObject>();
+            _ListObject = new List<IItem>();
             Coordinate = coordinate;
+            HasPower = hasPower;
+        }
+        public Stack(Coordinate coordinate)
+        {
+            _ListObject = new List<IItem>();
+            Coordinate = coordinate;
+            HasPower = false;
+        }
+        //Can be used in a wrong way
+        public Stack(Coordinate coordinate, IList<IItem> listObject, bool hasPower)
+        {
+            _ListObject = listObject.ToList();
+            Coordinate = coordinate;
+            HasPower = false;
         }
         public int GetWeightKG()
         {
             int totalWeight = 0;
-            foreach (IObject objectInList in ListObject)
+            foreach (IItem objectInList in ListObject)
             {
                 totalWeight += objectInList.WeightKG;
             }
@@ -34,29 +49,34 @@ namespace Logic
             }
             return false;
         }
-        public bool AddObject(IObject objectToAdd)
+        public bool AddObject(IItem itemToAdd)
         {
-            bool canObjectJoin = false;
-            IStackObject stackObject = (IStackObject)objectToAdd;
-            
-            if (stackObject.CanJoinStack())
+            bool canJoin = CanObjectJoin(itemToAdd);
+
+            if (canJoin)
             {
-                canObjectJoin = true;
-                foreach (IStackObject stackContainerInStack in ListObject)
+                ListObject.Add(itemToAdd);
+            }
+            return canJoin;
+        }
+        public bool CanObjectJoin(IItem itemToAdd)
+        {
+            bool canJoin = true;
+
+            if (!DoesObjectFitInStack(itemToAdd.WeightKG))
+            {
+                return false;
+            }
+
+            foreach (IItem itemInStack in ListObject)
+            {
+                if (!itemInStack.CanJoin.CanObjectJoin(itemToAdd))
                 {
-                    if (!stackContainerInStack.CanObjectJoin())
-                    {
-                        canObjectJoin = false;
-                    }
+                    canJoin = false;
+                    break;
                 }
             }
-
-            if (canObjectJoin)
-            {
-                ListObject.Add(objectToAdd);
-            }
-
-            return canObjectJoin;
+            return canJoin;
         }
     }
 }

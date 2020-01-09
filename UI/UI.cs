@@ -8,11 +8,9 @@ namespace UI
 {
     public partial class UI : Form
     {
-        IManager ShipManager;
-        IShip currentShipUsing;
+        IStorageArea CurrentShipUsing;
         public UI()
         {
-            ShipManager = new ShipManager();
             InitializeComponent();
             SetVisibilityTo(Visiblity.Ship);
         }
@@ -57,15 +55,14 @@ namespace UI
 
         private void btnAssign_Click(object sender, EventArgs e)
         {
-            currentShipUsing = new ContainerShip((int)numericUpDownColumns.Value, (int)numericUpDownRows.Value);
-            ShipManager.AddNewShip(currentShipUsing);
+            CurrentShipUsing = new ContainerShip((int)numericUpDownColumns.Value, (int)numericUpDownRows.Value);
 
-            List<IObject> containersToAssign = new List<IObject>();
-            foreach (IContainer container in lBoxContainer.Items)
+            List<IItem> containersToAssign = new List<IItem>();
+            foreach (BaseContainer container in lBoxContainer.Items)
             {
                 containersToAssign.Add(container);
             }
-            ShipManager.AssignObjects(containersToAssign, currentShipUsing);
+            CurrentShipUsing.ObjectAssigner.AssignObjects(containersToAssign);
             lblAssigned.Text = "Assigned: Yes";
         }
 
@@ -95,13 +92,12 @@ namespace UI
 
         private void btnVisualizerLink_Click(object sender, EventArgs e)
         {
-            ShipManager shipManager = (ShipManager)ShipManager;
-            Process.Start("Chrome.exe", shipManager.GetStringVisualizer(currentShipUsing));
+            Process.Start("Chrome.exe", CurrentShipUsing.StorageManager.GetStringVisualizer());
         }
 
         private void btnClearListContainer_Click(object sender, EventArgs e)
         {
-            currentShipUsing = new ContainerShip((int)numericUpDownColumns.Value, (int)numericUpDownRows.Value);
+            CurrentShipUsing = new ContainerShip((int)numericUpDownColumns.Value, (int)numericUpDownRows.Value);
             lBoxContainer.Items.Clear();
             lblAssigned.Text = "Assigned: No";
         }

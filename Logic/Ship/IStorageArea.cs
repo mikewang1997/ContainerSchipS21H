@@ -7,10 +7,13 @@ using System.Threading.Tasks;
 
 namespace Logic
 {
-    public interface IShip
+    public interface IStorageArea
     {
         int TotalColumns { get; }
         int TotalRows { get; }
-        IList<IStack> ListStack { get; }
+        IList<Stack> ListStack { get; }
+        IObjectAssigner ObjectAssigner { get; }
+        StorageManager StorageManager { get; }
+        int GetTotalWeight();
     }
 }
