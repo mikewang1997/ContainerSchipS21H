@@ -14,18 +14,22 @@ namespace Logic
 
         }
         //Balancing cant place items because it cant ask 
-        public void PlaceItems(IStorageArea storageArea, List<IItem> itemsToPlace)
+        public void PlaceItems(Ship containerShip, List<IItem> itemsToPlace)
         {
-            List<StackGroup> stackGroups = GetListStackInSections(storageArea.TotalColumns, storageArea.TotalRows, storageArea.ListStack);
+            List<StackGroup> stackGroups = GetListStackInSections(containerShip.TotalColumns, containerShip.TotalRows, containerShip.ListStack);
 
+            foreach (IItem item in itemsToPlace)
+            {
+
+            }
             foreach (StackGroup stackGroup in GetStackGroupSortedOnWeightASC(stackGroups))
             {
                 bool isAssigned = false;
                 foreach (Stack stack in SortStacksByWeightASC(stackGroup))
                 {
-                    List<Stack> stacksInFrontAndBehind = StorageManager.GetStacksInFrontAndBehindOfStack(stack);
+                    List<Stack> stacksInFrontAndBehind = containerShip.GetStacksInFrontAndBehindOfStack(stack);
 
-                    CanJoinParams canJoinParams = new CanJoinParams(stackToUse, stacksInFrontAndBehind);
+                    CanJoinParams canJoinParams = new CanJoinParams(stack, stacksInFrontAndBehind);
                     if (!containerToAssign.CanJoin.CanJoinStack(canJoinParams))
                     {
                         continue;
@@ -120,7 +124,7 @@ namespace Logic
             List<Stack> sortedStacksByWeightASC = stackGroup.ListStack.OrderBy(o => o.GetWeightKG()).ToList();
             return sortedStacksByWeightASC;
         }
-        public List<StackGroup> GetListStackInSections(int totalColumns, int totalRows, List<Stack> listStack)
+        public List<StackGroup> GetListStackInSections(int totalColumns, int totalRows, IList<Stack> listStack)
         {
             List<StackGroup> resultListStackGroup = new List<StackGroup>();
             for (int X = 1; X <= totalColumns; X += totalColumns / 2)

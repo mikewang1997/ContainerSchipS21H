@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Logic
 {
-    public class ContainerShip : IStorageArea
+    public class Ship
     {
         public int TotalColumns { get; private set; }
         public int TotalRows { get; private set; }
@@ -15,7 +15,7 @@ namespace Logic
         private List<Stack> _ListStack;
         public IList<Stack> ListStack {  get{return _ListStack;} }
 
-        public ContainerShip(int totalColumns, int totalRows, IBalancingMethod balancingMethod)
+        public Ship(int totalColumns, int totalRows, IBalancingMethod balancingMethod)
         {
             TotalColumns = totalColumns;
             TotalRows = totalRows;

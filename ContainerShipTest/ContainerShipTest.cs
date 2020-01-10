@@ -11,8 +11,8 @@ namespace ContainerShipTest
         public void AssignObjects()
         {
             //Arrange
-            IStorageArea containerShip = new ContainerShip(6, 6);
-            List<IItem> containers = new List<IItem>();
+            IStorageArea containerShip = new Ship(6, 6);
+            List<BaseContainer> containers = new List<BaseContainer>();
             for (int i = 0; i < 10; i++)
             {
                 containers.Add(new CooledContainer(26000));

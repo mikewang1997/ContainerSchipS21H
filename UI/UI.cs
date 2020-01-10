@@ -55,7 +55,7 @@ namespace UI
 
         private void btnAssign_Click(object sender, EventArgs e)
         {
-            CurrentShipUsing = new ContainerShip((int)numericUpDownColumns.Value, (int)numericUpDownRows.Value);
+            CurrentShipUsing = new Ship((int)numericUpDownColumns.Value, (int)numericUpDownRows.Value);
 
             List<IItem> containersToAssign = new List<IItem>();
             foreach (BaseContainer container in lBoxContainer.Items)
@@ -97,7 +97,7 @@ namespace UI
 
         private void btnClearListContainer_Click(object sender, EventArgs e)
         {
-            CurrentShipUsing = new ContainerShip((int)numericUpDownColumns.Value, (int)numericUpDownRows.Value);
+            CurrentShipUsing = new Ship((int)numericUpDownColumns.Value, (int)numericUpDownRows.Value);
             lBoxContainer.Items.Clear();
             lblAssigned.Text = "Assigned: No";
         }

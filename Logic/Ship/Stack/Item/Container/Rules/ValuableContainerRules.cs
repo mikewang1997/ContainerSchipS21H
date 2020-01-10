@@ -9,7 +9,7 @@ namespace Logic
     public class ValuableContainerRules : ICanJoin
     {
         //Business Rule: Need to check if there is in front and behind a valuable container in current stack
-        public bool CanObjectJoin(IItem item)
+        public bool CanObjectJoin(BaseContainer item)
         {
             return false;
         }
