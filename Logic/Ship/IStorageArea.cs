@@ -12,8 +12,8 @@ namespace Logic
         int TotalColumns { get; }
         int TotalRows { get; }
         IList<Stack> ListStack { get; }
-        IObjectAssigner ObjectAssigner { get; }
-        StorageManager StorageManager { get; }
         int GetTotalWeight();
+        bool AssignObjects(List<IItem> items);
+        List<Stack> GetStacksInFrontAndBehindOfStack(Stack currentStack);
     }
 }

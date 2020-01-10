@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace Logic
 {
-    public interface IBalancer
+    public interface IBalancingMethod
     {
         //List<StackGroup> ListStackGroup { get; }
         bool IsInBalance(StorageManager storageManager);
         bool IsSinkable(List<StackGroup> listStackGroup);
+        void PlaceItems(int TotalRows, int TotalColumns, List<Stack> listStack, List<IItem> itemsToPlace);
     }
 }

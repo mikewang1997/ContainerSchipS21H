@@ -9,8 +9,6 @@ namespace Logic
     public class StorageManager 
     {
         public IStorageArea Storage { get; private set; }
-        public IList<StackGroup> ListStackGroup { get { return _ListStackGroup; } }
-        public List<StackGroup> _ListStackGroup { get; private set; }
 
         public StorageManager(IStorageArea storage)
         {
@@ -45,18 +43,18 @@ namespace Logic
             return resultListStackGroup;
         }
 
-        public StackGroup GetStackGroupLowestWeight()
-        {
-            StackGroup lightestWeightStack = ListStackGroup[0];
-            foreach (StackGroup stackGroup in ListStackGroup)
-            {
-                if (lightestWeightStack.GetTotalWeightKG() > stackGroup.GetTotalWeightKG())
-                {
-                    lightestWeightStack = stackGroup;
-                }
-            }
-            return lightestWeightStack;
-        }
+        //public StackGroup GetStackGroupLowestWeight()
+        //{
+        //    StackGroup lightestWeightStack = ListStackGroup[0];
+        //    foreach (StackGroup stackGroup in ListStackGroup)
+        //    {
+        //        if (lightestWeightStack.GetTotalWeightKG() > stackGroup.GetTotalWeightKG())
+        //        {
+        //            lightestWeightStack = stackGroup;
+        //        }
+        //    }
+        //    return lightestWeightStack;
+        //}
 
 
         public List<Stack> GetStacksInFrontAndBehindOfStack(Stack currentStack)
