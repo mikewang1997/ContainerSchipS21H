@@ -58,17 +58,6 @@ namespace Logic
             return lightestWeightStack;
         }
 
-        public List<StackGroup> GetStackGroupSortedOnWeightASC()
-        {
-            //IList<StackGroup> currentStackGroup = GetListStackInSections();
-            List<StackGroup> sortedStackGroupResult = ListStackGroup.OrderBy(o => o.GetTotalWeightKG()).ToList();
-            return sortedStackGroupResult;
-        }
-        public List<Stack> SortStacksByWeightASC(StackGroup stackGroup)
-        {
-            List<Stack> sortedStacksByWeightASC = stackGroup.ListStack.OrderBy(o => o.GetWeightKG()).ToList();
-            return sortedStacksByWeightASC;
-        }
 
         public List<Stack> GetStacksInFrontAndBehindOfStack(Stack currentStack)
         {

@@ -12,7 +12,6 @@ namespace Logic
         {
 
         }
-
         public bool IsInBalance(StorageManager storageManager)
         {
             bool IsInBalance = false;
@@ -34,7 +33,7 @@ namespace Logic
         public int GetHalfOfStorageWeight(List<StackGroup> stackGroups)
         {
             int totalWeightSide = 0;
-            for (int i = 0; i < stackGroups.Count/2; i++)
+            for (int i = 0; i <= stackGroups.Count/2; i++)
             {
                 if (stackGroups.Count/2 >= i)
                 {
@@ -75,6 +74,17 @@ namespace Logic
                 totalPotentialMaxWeight += stackGroup.ListStack.Count * 150000;
             }
             return totalPotentialMaxWeight;
+        }
+        public List<StackGroup> GetStackGroupSortedOnWeightASC(List<StackGroup> listStackGroup)
+        {
+            //IList<StackGroup> currentStackGroup = GetListStackInSections();
+            List<StackGroup> sortedStackGroupResult = listStackGroup.OrderBy(o => o.GetTotalWeightKG()).ToList();
+            return sortedStackGroupResult;
+        }
+        public List<Stack> SortStacksByWeightASC(StackGroup stackGroup)
+        {
+            List<Stack> sortedStacksByWeightASC = stackGroup.ListStack.OrderBy(o => o.GetWeightKG()).ToList();
+            return sortedStacksByWeightASC;
         }
     }
 }

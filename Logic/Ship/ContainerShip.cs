@@ -11,18 +11,16 @@ namespace Logic
     {
         public int TotalColumns { get; private set; }
         public int TotalRows { get; private set; }
+        public IBalancer Balancer { get; private set; }
         private List<Stack> _ListStack;
         public IList<Stack> ListStack {  get{return _ListStack;} }
-        public IObjectAssigner ObjectAssigner { get; private set; }
-        public StorageManager StorageManager { get; set; }
 
-        public ContainerShip(int totalColumns, int totalRows)
+        public ContainerShip(int totalColumns, int totalRows, IBalancer balancer)
         {
             TotalColumns = totalColumns;
             TotalRows = totalRows;
             InitializeListStacks();
-            StorageManager = new StorageManager(this);
-            ObjectAssigner = new ContainerAssigner(new ShipBalancer(), StorageManager);
+            Balancer = balancer;
         }
         private void InitializeListStacks()
         {
