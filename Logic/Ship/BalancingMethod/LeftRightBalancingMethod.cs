@@ -113,13 +113,25 @@ namespace Logic
         private int GetHalfSideOfStorageWeight(List<StackGroup> stackGroups)
         {
             int totalWeightSide = 0;
-            for (int i = 0; i <= stackGroups.Count / 2; i++)
+
+            //duplicate code in if and else
+            if (stackGroups.Count % 2 > 0)
             {
-                if (stackGroups.Count / 2 <= i)
+                for (int i = 0; i <= stackGroups.Count / 2; i++)
                 {
-                    totalWeightSide += (stackGroups[i].GetTotalWeightKG() / 2);
+                    if (stackGroups.Count / 2 <= i)
+                    {
+                        totalWeightSide += (stackGroups[i].GetTotalWeightKG() / 2);
+                    }
+                    else
+                    {
+                        totalWeightSide += stackGroups[i].GetTotalWeightKG();
+                    }
                 }
-                else
+            }
+            else
+            {
+                for (int i = 0; i < stackGroups.Count / 2; i++)
                 {
                     totalWeightSide += stackGroups[i].GetTotalWeightKG();
                 }
