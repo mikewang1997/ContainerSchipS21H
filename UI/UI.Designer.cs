@@ -44,13 +44,15 @@
             this.lblColumns = new System.Windows.Forms.Label();
             this.lblRows = new System.Windows.Forms.Label();
             this.grpBoxContainer = new System.Windows.Forms.GroupBox();
+            this.btnClearListContainer = new System.Windows.Forms.Button();
+            this.lblAssigned = new System.Windows.Forms.Label();
             this.btnVisualizerLink = new System.Windows.Forms.Button();
             this.numericUpDownWeight = new System.Windows.Forms.NumericUpDown();
             this.lblWeight = new System.Windows.Forms.Label();
             this.lBoxContainer = new System.Windows.Forms.ListBox();
             this.btnAssign = new System.Windows.Forms.Button();
-            this.lblAssigned = new System.Windows.Forms.Label();
-            this.btnClearListContainer = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.errorMessageLbox = new System.Windows.Forms.ListBox();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRegular)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownCooled)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownValuable)).BeginInit();
@@ -197,6 +199,8 @@
             // 
             // grpBoxContainer
             // 
+            this.grpBoxContainer.Controls.Add(this.errorMessageLbox);
+            this.grpBoxContainer.Controls.Add(this.label1);
             this.grpBoxContainer.Controls.Add(this.btnClearListContainer);
             this.grpBoxContainer.Controls.Add(this.lblAssigned);
             this.grpBoxContainer.Controls.Add(this.btnVisualizerLink);
@@ -219,6 +223,25 @@
             this.grpBoxContainer.TabIndex = 13;
             this.grpBoxContainer.TabStop = false;
             this.grpBoxContainer.Text = "Container";
+            // 
+            // btnClearListContainer
+            // 
+            this.btnClearListContainer.Location = new System.Drawing.Point(40, 157);
+            this.btnClearListContainer.Name = "btnClearListContainer";
+            this.btnClearListContainer.Size = new System.Drawing.Size(89, 38);
+            this.btnClearListContainer.TabIndex = 21;
+            this.btnClearListContainer.Text = "Clear";
+            this.btnClearListContainer.UseVisualStyleBackColor = true;
+            this.btnClearListContainer.Click += new System.EventHandler(this.btnClearListContainer_Click);
+            // 
+            // lblAssigned
+            // 
+            this.lblAssigned.AutoSize = true;
+            this.lblAssigned.Location = new System.Drawing.Point(111, 204);
+            this.lblAssigned.Name = "lblAssigned";
+            this.lblAssigned.Size = new System.Drawing.Size(92, 17);
+            this.lblAssigned.TabIndex = 20;
+            this.lblAssigned.Text = "Assigned: No";
             // 
             // btnVisualizerLink
             // 
@@ -275,24 +298,24 @@
             this.btnAssign.UseVisualStyleBackColor = true;
             this.btnAssign.Click += new System.EventHandler(this.btnAssign_Click);
             // 
-            // lblAssigned
+            // label1
             // 
-            this.lblAssigned.AutoSize = true;
-            this.lblAssigned.Location = new System.Drawing.Point(111, 204);
-            this.lblAssigned.Name = "lblAssigned";
-            this.lblAssigned.Size = new System.Drawing.Size(92, 17);
-            this.lblAssigned.TabIndex = 20;
-            this.lblAssigned.Text = "Assigned: No";
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 268);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(101, 17);
+            this.label1.TabIndex = 23;
+            this.label1.Text = "ErrorMessage:";
             // 
-            // btnClearListContainer
+            // errorMessageLbox
             // 
-            this.btnClearListContainer.Location = new System.Drawing.Point(40, 157);
-            this.btnClearListContainer.Name = "btnClearListContainer";
-            this.btnClearListContainer.Size = new System.Drawing.Size(89, 38);
-            this.btnClearListContainer.TabIndex = 21;
-            this.btnClearListContainer.Text = "Clear";
-            this.btnClearListContainer.UseVisualStyleBackColor = true;
-            this.btnClearListContainer.Click += new System.EventHandler(this.btnClearListContainer_Click);
+            this.errorMessageLbox.FormattingEnabled = true;
+            this.errorMessageLbox.ItemHeight = 16;
+            this.errorMessageLbox.Location = new System.Drawing.Point(110, 268);
+            this.errorMessageLbox.Name = "errorMessageLbox";
+            this.errorMessageLbox.Size = new System.Drawing.Size(232, 84);
+            this.errorMessageLbox.TabIndex = 25;
+            this.errorMessageLbox.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
             // UI
             // 
@@ -341,6 +364,8 @@
         private System.Windows.Forms.Button btnVisualizerLink;
         private System.Windows.Forms.Label lblAssigned;
         private System.Windows.Forms.Button btnClearListContainer;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ListBox errorMessageLbox;
     }
 }
 

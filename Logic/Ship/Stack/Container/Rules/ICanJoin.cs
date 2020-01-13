@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Logic
 {
-    public interface IObjectAssigner
+    public interface ICanJoin
     {
-        void AssignObjects(IList<IItem> listObjects);
-
+        bool CanObjectJoin(BaseContainer item);
+        bool CanJoinStack(CanJoinParams canJoin);
     }
 }

@@ -13,69 +13,111 @@ namespace Logic
         {
 
         }
-        //Balancing cant place items because it cant ask 
-        public void PlaceItems(Ship containerShip, List<IItem> itemsToPlace)
+        public void PlaceContainers(Ship ship, List<BaseContainer> containersToPlace)
         {
-            List<StackGroup> stackGroups = GetListStackInSections(containerShip.TotalColumns, containerShip.TotalRows, containerShip.ListStack);
-
-            foreach (IItem item in itemsToPlace)
-            {
-
-            }
-            foreach (StackGroup stackGroup in GetStackGroupSortedOnWeightASC(stackGroups))
+            foreach (BaseContainer container in GetContainerListSortedByType(containersToPlace))
             {
                 bool isAssigned = false;
-                foreach (Stack stack in SortStacksByWeightASC(stackGroup))
-                {
-                    List<Stack> stacksInFrontAndBehind = containerShip.GetStacksInFrontAndBehindOfStack(stack);
+                //If sinkable just place a container in a stack, if not place containers in a stack in a balancing way
+                //if (IsSinkable(ship))
+                //{
+                //    if (isAssigned)
+                //    {
+                //        break;
+                //    }
+                //    foreach (Stack stack in ship.ListStack)
+                //    {
+                //        //duplicate code, i dont see another fix for now
+                //        if (isAssigned)
+                //        {
+                //            break;
+                //        }
+                //        List<Stack> stacksInFrontAndBehind = ship.GetStacksInFrontAndBehindOfStack(stack);
 
-                    CanJoinParams canJoinParams = new CanJoinParams(stack, stacksInFrontAndBehind);
-                    if (!containerToAssign.CanJoin.CanJoinStack(canJoinParams))
+                //        CanJoinParams canJoinParams = new CanJoinParams(stack, stacksInFrontAndBehind);
+                //        if (!container.CanJoin.CanJoinStack(canJoinParams))
+                //        {
+                //            continue;
+                //        }
+                //        isAssigned = stack.AddObject(container);
+                //    }
+                //}
+                //else
+                //{
+                    List<StackGroup> stackGroups = GetListStackInSections(ship.TotalColumns, ship.TotalRows, ship.ListStack);
+                    foreach (StackGroup stackGroup in GetStackGroupSortedOnWeightASC(stackGroups))
                     {
-                        continue;
-                        //canBeAssigned = false;
-                    }
-                    //if (canBeAssigned)
-                    //{
-                    isAssigned = stackToUse.AddObject(containerToAssign);
-                    //}
-                    //CanJoinParams canJoinParams = CanJoinParamsContainerFactory.Build(containerToAssign, stackToUse, StorageManager.GetStacksInFrontAndBehindOfStack(stackToUse));
-                    if (isAssigned)
-                    {
-                        break;
+                        if (isAssigned)
+                        {
+                            break;
+                        }
+                        foreach (Stack stack in SortStacksByWeightASC(stackGroup))
+                        {
+                            //duplicate code, i dont see another fix for now
+                            if (isAssigned)
+                            {
+                                break;
+                            }
+                            List<Stack> stacksInFrontAndBehind = ship.GetStacksInFrontAndBehindOfStack(stack);
+
+                            CanJoinParams canJoinParams = new CanJoinParams(stack, stacksInFrontAndBehind);
+                            if (!container.CanJoin.CanJoinStack(canJoinParams))
+                            {
+                                continue;
+                            }
+                            isAssigned = stack.AddObject(container);
+                        }
                     }
                 }
-            }
+            //}
+            //Code smell?
+            //if (IsInBalance(ship))
+            //{
+            //    return true;
+            //}
+            //return false;
         }
-
-        //changed
-        public bool IsInBalance()
+        public bool IsInBalance(Ship ship)
         {
             bool IsInBalance = false;
-            if (IsSideWithinRequiredMargin(GetHalfSideOfStorageWeight(storageManager._ListStackGroup), storageManager.Storage.GetTotalWeight()))
+            List<StackGroup> stackGroups = GetListStackInSections(ship.TotalColumns, ship.TotalRows, ship.ListStack);
+
+            if (HasShipRequiredMargin(stackGroups, ship.GetTotalWeight()) & !IsSinkable(ship))
             {
                 IsInBalance = true;
             }
             return IsInBalance;
         }
-        //needed
-        private bool IsSideWithinRequiredWeightMargin(int sideWeight, int totalWeightStorage)
+        private bool HasShipRequiredMargin(List<StackGroup> stackGroups, int totalShipWeight)
         {
-            int percentageWeightOccupied = (int)((decimal)(sideWeight) / (decimal)(totalWeightStorage) * 100);
+            int percentageWeightOccupied = (int)((decimal)(GetHalfSideOfStorageWeight(stackGroups)) / (decimal)(totalShipWeight) * 100);
             if (percentageWeightOccupied <= 60 && percentageWeightOccupied >= 40)
             {
                 return true;
             }
             return false;
         }
-        public int GetHalfSideOfStorageWeight(List<StackGroup> stackGroups)
+        //public bool IsStackGroupBalanced(StackGroup stackGroup, Ship ship)
+        //{
+        //    if (stackGroups.Count%2  > 0)
+        //    {
+
+        //    }
+        //    int percentageWeightOccupied = (int)((decimal)(stackGroup.GetTotalWeightKG()) / (decimal)(ship.GetTotalWeight()) * 100);
+        //    if (percentageWeightOccupied <= 60 && percentageWeightOccupied >= 40)
+        //    {
+        //        return true;
+        //    }
+        //    return false;
+        //}
+        private int GetHalfSideOfStorageWeight(List<StackGroup> stackGroups)
         {
             int totalWeightSide = 0;
-            for (int i = 0; i <= stackGroups.Count/2; i++)
+            for (int i = 0; i <= stackGroups.Count / 2; i++)
             {
-                if (stackGroups.Count/2 >= i)
+                if (stackGroups.Count / 2 <= i)
                 {
-                    totalWeightSide += (stackGroups[i].GetTotalWeightKG()/2);
+                    totalWeightSide += (stackGroups[i].GetTotalWeightKG() / 2);
                 }
                 else
                 {
@@ -84,34 +126,30 @@ namespace Logic
             }
             return totalWeightSide;
         }
-        public bool IsSinkable(List<StackGroup> listStackGroup)
+        public List<BaseContainer> GetContainerListSortedByType(List<BaseContainer> containersToSort)
         {
-            int currentWeightKG = 0;
-            int totalMaxWeightKG = GetTotalPotentialMaxWeight(listStackGroup);
-            foreach (StackGroup stackGroup in listStackGroup)
-            {
-                foreach (Stack stack in stackGroup.ListStack)
-                {
-                    currentWeightKG += stack.GetWeightKG();
-                }
-            }
+            List<BaseContainer> sortedContainers = containersToSort.OrderByDescending(o => o.ContainerType).OrderByDescending(o => o.WeightKG).ToList();
+            return sortedContainers;
+        }
+        private bool IsSinkable(Ship ship)
+        {
+            List<StackGroup> stackGroups = GetListStackInSections(ship.TotalColumns, ship.TotalRows, ship.ListStack);
+
+            int currentWeightKG = ship.GetTotalWeight();
+            int totalMaxWeightKG = ship.GetTotalPotentialMaxWeight();
+
             if ((decimal)currentWeightKG / totalMaxWeightKG*100 >= 50)
             {
-                return true;
+                return false;
             }
             else
             {
-                return false; 
+                return true; 
             }
         }
-        private int GetTotalPotentialMaxWeight(List<StackGroup> listStackGroup)
+        public List<Stack> SortContainerType()
         {
-            int totalPotentialMaxWeight = 0;
-            foreach (StackGroup stackGroup in listStackGroup)
-            {
-                totalPotentialMaxWeight += stackGroup.ListStack.Count * 150000;
-            }
-            return totalPotentialMaxWeight;
+            return null;
         }
         public List<StackGroup> GetStackGroupSortedOnWeightASC(List<StackGroup> listStackGroup)
         {

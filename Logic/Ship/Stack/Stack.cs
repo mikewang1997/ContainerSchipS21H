@@ -9,23 +9,23 @@ namespace Logic
     public class Stack
     {
         public Coordinate Coordinate { get; private set; }
-        private List<IItem> _ListObject;
-        public IList<IItem> ListObject { get { return _ListObject; } }
+        private List<BaseContainer> _ListObject;
+        public IList<BaseContainer> ListObject { get { return _ListObject; } }
         public bool HasPower { get; private set; }
         public Stack(Coordinate coordinate, bool hasPower)
         {
-            _ListObject = new List<IItem>();
+            _ListObject = new List<BaseContainer>();
             Coordinate = coordinate;
             HasPower = hasPower;
         }
         public Stack(Coordinate coordinate)
         {
-            _ListObject = new List<IItem>();
+            _ListObject = new List<BaseContainer>();
             Coordinate = coordinate;
             HasPower = false;
         }
         //Can be used in a wrong way
-        public Stack(Coordinate coordinate, IList<IItem> listObject, bool hasPower)
+        public Stack(Coordinate coordinate, IList<BaseContainer> listObject, bool hasPower)
         {
             _ListObject = listObject.ToList();
             Coordinate = coordinate;
@@ -34,7 +34,7 @@ namespace Logic
         public int GetWeightKG()
         {
             int totalWeight = 0;
-            foreach (IItem objectInList in ListObject)
+            foreach (BaseContainer objectInList in ListObject)
             {
                 totalWeight += objectInList.WeightKG;
             }
@@ -49,7 +49,7 @@ namespace Logic
             }
             return false;
         }
-        public bool AddObject(IItem itemToAdd)
+        public bool AddObject(BaseContainer itemToAdd)
         {
             bool canJoin = CanObjectJoin(itemToAdd);
 
@@ -59,7 +59,7 @@ namespace Logic
             }
             return canJoin;
         }
-        public bool CanObjectJoin(IItem itemToAdd)
+        public bool CanObjectJoin(BaseContainer itemToAdd)
         {
             bool canJoin = true;
 
@@ -68,7 +68,7 @@ namespace Logic
                 return false;
             }
 
-            foreach (IItem itemInStack in ListObject)
+            foreach (BaseContainer itemInStack in ListObject)
             {
                 if (!itemInStack.CanJoin.CanObjectJoin(itemToAdd))
                 {

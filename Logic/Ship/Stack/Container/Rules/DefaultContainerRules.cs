@@ -6,19 +6,16 @@ using System.Threading.Tasks;
 
 namespace Logic
 {
-    public class CooledContainerRules : ICanJoin
+    public class DefaultContainerRules : ICanJoin
     {
-        public bool CanObjectJoin(IItem item)
+        public bool CanObjectJoin(BaseContainer item)
         {
             return true;
         }
+
         public bool CanJoinStack(CanJoinParams canJoin)
         {
-            if (canJoin.Stack.HasPower)
-            {
-                return true;
-            }
-            return false;
+            return true;
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Logic
 {
-    public abstract class BaseContainer : IItem
+    public abstract class BaseContainer
     {
         public EnumContainerType ContainerType { get; private set; }
         public int WeightKG { get; private set; }

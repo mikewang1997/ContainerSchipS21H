@@ -13,7 +13,7 @@ namespace Logic
         int TotalRows { get; }
         IList<Stack> ListStack { get; }
         int GetTotalWeight();
-        bool AssignObjects(List<IItem> items);
+        bool AssignObjects(List<BaseContainer> items);
         List<Stack> GetStacksInFrontAndBehindOfStack(Stack currentStack);
     }
 }

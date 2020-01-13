@@ -8,7 +8,7 @@ namespace UI
 {
     public partial class UI : Form
     {
-        IStorageArea CurrentShipUsing;
+        Ship CurrentShipUsing;
         public UI()
         {
             InitializeComponent();
@@ -55,15 +55,28 @@ namespace UI
 
         private void btnAssign_Click(object sender, EventArgs e)
         {
-            CurrentShipUsing = new Ship((int)numericUpDownColumns.Value, (int)numericUpDownRows.Value);
+            errorMessageLbox.Items.Clear();
 
-            List<IItem> containersToAssign = new List<IItem>();
+            CurrentShipUsing = new Ship((int)numericUpDownColumns.Value, (int)numericUpDownRows.Value, new LeftRightBalancingMethod());
+
+            List<BaseContainer> containersToAssign = new List<BaseContainer>();
             foreach (BaseContainer container in lBoxContainer.Items)
             {
                 containersToAssign.Add(container);
             }
-            CurrentShipUsing.ObjectAssigner.AssignObjects(containersToAssign);
-            lblAssigned.Text = "Assigned: Yes";
+            if (CurrentShipUsing.AssignObjects(containersToAssign))
+            {
+                lblAssigned.Text = "Assigned: Yes";
+            }
+            else
+            {
+                //not good code for UI, can be way better
+                errorMessageLbox.Items.Add("Error could be the following reasons:");
+                errorMessageLbox.Items.Add("Not enough containers assigned");
+                errorMessageLbox.Items.Add("Not in balance");
+                errorMessageLbox.Items.Add("Ship is sinkable");
+            }
+
         }
 
         private void btnAddRegular_Click(object sender, EventArgs e)
@@ -92,14 +105,24 @@ namespace UI
 
         private void btnVisualizerLink_Click(object sender, EventArgs e)
         {
-            Process.Start("Chrome.exe", CurrentShipUsing.StorageManager.GetStringVisualizer());
+            Process.Start("Chrome.exe", CurrentShipUsing.GetStringVisualizer());
         }
 
         private void btnClearListContainer_Click(object sender, EventArgs e)
         {
-            CurrentShipUsing = new Ship((int)numericUpDownColumns.Value, (int)numericUpDownRows.Value);
+            CurrentShipUsing = new Ship((int)numericUpDownColumns.Value, (int)numericUpDownRows.Value, new LeftRightBalancingMethod());
             lBoxContainer.Items.Clear();
             lblAssigned.Text = "Assigned: No";
+        }
+
+        private void richTextBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -49,11 +49,20 @@ namespace Logic
             }
             return totalWeight;
         }
-        public bool AssignObjects(List<IItem> items)
+        public bool AssignObjects(List<BaseContainer> containers)
         {
-            BalancingMethod.PlaceItems(items);
+            BalancingMethod.PlaceContainers(this, containers);
+            //use other balancermethods
+            //rebalance with same balancer
+            //return error code back: containers cannot be placed/is not balanced/is sinkable
+            return BalancingMethod.IsInBalance(this);
         }
-
+        public int GetTotalPotentialMaxWeight()
+        {
+            int totalPotentialMaxWeight = 0;
+            totalPotentialMaxWeight += ListStack.Count * 150000;
+            return totalPotentialMaxWeight;
+        }
         public List<Stack> GetStacksInFrontAndBehindOfStack(Stack currentStack)
         {
             List<Stack> resultStacksInFrontAndBehind = new List<Stack>();
@@ -87,7 +96,20 @@ namespace Logic
                         {
                             foreach (BaseContainer container in stack.ListObject)
                             {
-                                http += (int)container.ContainerType;
+                                int containerTypeNumber = 0;
+                                if (container.ContainerType == EnumContainerType.Normal)
+                                {
+                                    containerTypeNumber = 1;
+                                }
+                                if (container.ContainerType == EnumContainerType.Valuable)
+                                {
+                                    containerTypeNumber = 2;
+                                }
+                                if (container.ContainerType == EnumContainerType.Cooled)
+                                {
+                                    containerTypeNumber = 3;
+                                }
+                                http += containerTypeNumber;
                             }
                         }
                     }
